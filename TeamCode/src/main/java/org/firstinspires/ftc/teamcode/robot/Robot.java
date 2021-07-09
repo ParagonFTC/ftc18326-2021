@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.robot;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
+import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.lynx.LynxModule;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
@@ -120,6 +121,10 @@ public class Robot {
 
     public Encoder getEncoder(String deviceName) {
         return new Encoder(getMotor(deviceName));
+    }
+
+    public BNO055IMU getIMU(String deviceName) {
+        return hardwareMap.get(BNO055IMU.class, deviceName);
     }
 
     public void registerSubsystem(Subsystem subsystem) {

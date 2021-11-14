@@ -197,7 +197,7 @@ public class FtcRobotControllerActivity extends Activity
     @Override
     public void onServiceConnected(ComponentName name, IBinder service) {
       FtcRobotControllerBinder binder = (FtcRobotControllerBinder) service;
-      onServiceBind(binder.getService());
+      onServiceBind(context, binder.getService());
     }
 
     @Override
@@ -411,7 +411,7 @@ public class FtcRobotControllerActivity extends Activity
     checkPreferredChannel();
 
     AnnotatedHooksClassFilter.getInstance().callOnCreateMethods(this);
-    FtcDashboard.start();
+    FtcDashboard.start(context);
   }
 
   protected UpdateUI createUpdateUI() {
@@ -485,7 +485,7 @@ public class FtcRobotControllerActivity extends Activity
     RobotLog.cancelWriteLogcatToDisk();
 
     AnnotatedHooksClassFilter.getInstance().callOnDestroyMethods(this);
-    FtcDashboard.stop();
+    FtcDashboard.stop(context);
   }
 
   protected void bindToService() {
@@ -681,7 +681,7 @@ public class FtcRobotControllerActivity extends Activity
     }
   }
 
-  public void onServiceBind(final FtcRobotControllerService service) {
+  public void onServiceBind(Context context, final FtcRobotControllerService service) {
     RobotLog.vv(FtcRobotControllerService.TAG, "%s.controllerService=bound", TAG);
     controllerService = service;
     updateUI.setControllerService(controllerService);
@@ -710,7 +710,7 @@ public class FtcRobotControllerActivity extends Activity
 
     AnnotatedHooksClassFilter.getInstance().callWebHandlerRegistrarMethods(this,
         service.getWebServer().getWebHandlerManager());
-    FtcDashboard.attachWebServer(service.getWebServer());
+    FtcDashboard.attachWebServer(context, service.getWebServer().getWebHandlerManager());
   }
 
   private void updateUIAndRequestRobotSetup() {
@@ -757,7 +757,7 @@ public class FtcRobotControllerActivity extends Activity
     AndroidBoard.showErrorIfUnknownControlHub();
 
     AnnotatedHooksClassFilter.getInstance().callOnCreateEventLoopMethods(this, eventLoop);
-    FtcDashboard.attachEventLoop(eventLoop);
+    FtcDashboard.attachEventLoop(context, eventLoop);
   }
 
   protected OpModeRegister createOpModeRegister() {
